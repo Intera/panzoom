@@ -455,6 +455,7 @@ function Panzoom(
         }
       )
     }
+  }
 
   function handleUp(event: PointerEvent) {
     // Don't call panzoomend when panning with 2 touches
