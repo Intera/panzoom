@@ -438,19 +438,23 @@ function Panzoom(
     if (pointers.length > 1) {
       // Use the distance between the first 2 pointers
       // to determine the current scale
+      // prevent zoom issue in mobile
+      if (startDistance === 0) {
+        startDistance = getDistance(pointers)
+      }
       const diff = getDistance(pointers) - startDistance
       const toScale = constrainScale((diff * options.step) / 80 + startScale).scale
       zoomToPoint(toScale, current)
+    } else {
+      // added else condition to prevent mobile zoom focal point error
+      pan(
+        origX + (current.clientX - startClientX) / scale,
+        origY + (current.clientY - startClientY) / scale,
+        {
+          animate: false
+        }
+      )
     }
-
-    pan(
-      origX + (current.clientX - startClientX) / scale,
-      origY + (current.clientY - startClientY) / scale,
-      {
-        animate: false
-      }
-    )
-  }
 
   function handleUp(event: PointerEvent) {
     // Don't call panzoomend when panning with 2 touches
